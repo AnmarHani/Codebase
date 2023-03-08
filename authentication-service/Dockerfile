@@ -1,8 +1,8 @@
-FROM python:3.12.0a5-slim-bullseye
+FROM python
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY config/requirements.txt .
 
 RUN pip install -r requirements.txt
 

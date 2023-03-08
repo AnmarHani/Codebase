@@ -1,28 +1,29 @@
 services:
-  mongodb:
-    image: mongo
+  postgresdb:
+    image: postgres
     restart: always
     ports:
-      - 8087:8087
+      - 8087:5432
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: test
 
   authentication-service:
     build: 
       context: ./authentication-service
       dockerfile: Dockerfile
     environment:
-      - MONGODB_URL=mongodb
-      - MONGODB_PORT=27017
-      - MONGODB_DATABASE=admin
-      - MONGODB_USERNAME=root
-      - MONGODB_PASSWORD=example
+      POSTGRES_USER: root
+      POSTGRES_PORT: 5432
+      POSTGRES_HOST: postgresdb
+      POSTGRES_PASSWORD: example
+      POSTGRES_DB: test
     command: uvicorn service:app --host=0.0.0.0 --port=8081 --reload
     ports:
       - 8081:8081
     depends_on:
-      - mongodb
+      - postgresdb
     volumes:
       - ./authentication-service:/app
   # businesses-service:
@@ -41,4 +42,4 @@ services:
       - authentication-service
     volumes:
       - ./api-service:/app
-
+      

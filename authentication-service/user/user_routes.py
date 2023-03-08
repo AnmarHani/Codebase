@@ -1,10 +1,9 @@
 from fastapi import APIRouter
-import os
+from . import user_controllers
 
 router = APIRouter(
     prefix='/user'
 )
 
-@router.get("/")
-async def create_user():
-    return {"msg":os.environ['MONGODB_URL']}
+router.add_api_route('/create', endpoint=user_controllers.create_user, methods=['GET'])
+router.add_api_route('/get', endpoint=user_controllers.get_user, methods=['GET'])
