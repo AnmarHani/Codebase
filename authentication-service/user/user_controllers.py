@@ -11,18 +11,13 @@
 # figma
 # midjourney
 # emailing service
-from . import user_model
-from utils.database import db
-import json
-import pymongo
 
-async def create_user():
-    # create user
-    user = user_model.User(name="Naif")
-    db.users.insert_one(user.__dict__)
-    return {"msg":f"saved with name :)!"}
+from . import user_model
+
+async def create_user(request: user_model.UserTemplate):
+    user = user_model.User(id=request.id, name=request.name, fullname=request.fullname, nickname=request.nickname)
+    user.create()
+    return {"msg":f"saved with name {request.name}!"}
 
 async def get_user():
-    users = db.users.find({})
-    print(pymongo.dumps(list(users)))
-    return {"users":list(users)}
+    return {"users":"no"}

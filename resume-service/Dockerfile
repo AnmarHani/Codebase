@@ -1,8 +1,10 @@
-FROM python:3.12.0a5-slim-bullseye
+FROM python:slim
 
 WORKDIR /app
 
 COPY config/requirements.txt .
+
+RUN pip install --upgrade pip
 
 RUN pip install -r requirements.txt
 
